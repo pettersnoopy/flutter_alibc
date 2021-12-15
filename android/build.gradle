@@ -1,0 +1,75 @@
+group 'com.wxwx.flutter_alibc'
+version '1.0-SNAPSHOT'
+
+buildscript {
+    ext.kotlin_version = '1.3.50'
+    repositories {
+        google()
+        jcenter()
+        maven{ url 'http://maven.aliyun.com/nexus/content/groups/public/'}
+        maven {
+            url "http://repo.baichuan-android.taobao.com/content/groups/BaichuanRepositories/"
+        }
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:4.1.0'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+rootProject.allprojects {
+    repositories {
+        google()
+        jcenter()
+        maven{ url 'http://maven.aliyun.com/nexus/content/groups/public/'}
+        maven {
+            url "http://repo.baichuan-android.taobao.com/content/groups/BaichuanRepositories/"
+        }
+    }
+}
+
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+
+android {
+    compileSdkVersion 28
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+    defaultConfig {
+        minSdkVersion 16
+    }
+    lintOptions {
+        disable 'InvalidPackage'
+    }
+}
+
+dependencies {
+    // 登陆
+    implementation 'com.alibaba.baichuan.sdk:alibclogin:5.0.0.13'
+    // applink
+    implementation 'com.alibaba.baichuan.sdk:alibcapplink:5.0.0.13'
+    // 广告SDK
+    implementation 'com.alibaba.baichuan.sdk:alibcad:5.0.0.13'
+    // 小程序
+    implementation 'com.alibaba.baichuan.sdk:alibctriver:5.0.0.13'
+    // c++基础库（如果工程中没有接入该so包：libc++_shared.so，需要接入该sdk）
+    implementation "llvm.stl:cpp_shared:0.0.3@aar"
+    // 直播
+    implementation 'com.alibaba.baichuan.sdk:alibctriver_live:5.0.0.13'
+    // webview容器
+    implementation 'com.alibaba.baichuan.sdk:alibcwebview:5.0.0.13'
+    // 电商基础组件
+    implementation 'com.alibaba.baichuan.sdk:alibctradecommon:5.0.0.13'
+    implementation 'com.alibaba.baichuan.sdk:alibcnbtrade:5.0.0.13'
+    implementation 'com.alibaba.baichuan.sdk:alibcprotocol:5.0.0.13'
+    // 辅助排查工具（可选）
+    implementation "com.alibaba.baichuan.sdk:alibctools:5.0.0.13"
+    // 安全保镖v5版本（根据实际情况，v5和v6版本选择其一）
+    implementation 'com.taobao.android:securityguardaar3:5.0.0.9-v5@aar'
+    implementation 'com.taobao.android:securitybodyaar3:5.0.0.9-v5@aar'
+    implementation 'com.taobao.android:avmpaar3:5.0.0.9-v5@aar'
+    implementation 'com.taobao.android:sgmiddletieraar3:5.0.0.9-v5@aar'
+}
