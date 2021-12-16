@@ -4,7 +4,6 @@ import android.app.Application
 import android.content.Context
 import android.content.Intent
 import android.webkit.WebChromeClient
-import android.webkit.WebViewClient
 import com.alibaba.alibclogin.AlibcLogin
 import com.alibaba.alibcprotocol.callback.AlibcLoginCallback
 import com.alibaba.alibcprotocol.callback.AlibcTradeCallback
@@ -15,7 +14,6 @@ import com.alibaba.alibcprotocol.param.AlibcTaokeParams
 import com.baichuan.nb_trade.AlibcTrade
 import com.baichuan.nb_trade.callback.AlibcTradeInitCallback
 import com.baichuan.nb_trade.core.AlibcTradeSDK
-import com.wxwx.flutter_alibc.web.WebViewActivity
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import java.util.*
@@ -90,25 +88,6 @@ class FlutterAlibcHandle(var methodChannel: MethodChannel?){
      * @param result
      */
     fun taoKeLogin(call: MethodCall){
-        val map = call.arguments as HashMap<String, Any>
-        val url = call.argument<String>("url")
-        WebViewActivity.callBack = object : WebViewActivity.Callback {
-            override fun success(accessToken: String?) {
-                val resMap: HashMap<String, Any?> = HashMap()
-                resMap.put("accessToken", accessToken)
-                methodChannel!!.invokeMethod("AlibcTaokeLogin", PluginResponse.success(resMap).toMap())
-            }
-
-            override fun failed(errorMsg: String?) {
-                val code = -1
-                methodChannel!!.invokeMethod("AlibcTaokeLogin", PluginResponse(code.toString(), errorMsg, null).toMap())
-            }
-        }
-        val intent = Intent(activity!!, WebViewActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        intent.putExtra("url", url)
-        intent.putExtra("arguments", map)
-        activity!!.startActivity(intent)
     }
 
     /**
@@ -118,25 +97,6 @@ class FlutterAlibcHandle(var methodChannel: MethodChannel?){
      * @param result
      */
     fun taoKeLoginForCode(call: MethodCall){
-        val map = call.arguments as HashMap<*, *>
-        val url = call.argument<String>("url")
-        WebViewActivity.callBack = object : WebViewActivity.Callback {
-            override fun success(accessToken: String?) {
-                val resMap: HashMap<String, Any?> = HashMap<String, Any?>()
-                resMap.put("code", accessToken)
-                methodChannel!!.invokeMethod("AlibcTaokeLoginForCode", PluginResponse.success(resMap).toMap())
-            }
-
-            override fun failed(errorMsg: String?) {
-                var code = -1
-                methodChannel!!.invokeMethod("AlibcTaokeLoginForCode", PluginResponse(code.toString(), errorMsg, null).toMap())
-            }
-        }
-        val intent = Intent(activity!!, WebViewActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        intent.putExtra("url", url)
-        intent.putExtra("arguments", map)
-        activity!!.startActivity(intent)
     }
 
     /**
